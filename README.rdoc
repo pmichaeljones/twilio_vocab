@@ -1,28 +1,7 @@
-== README
-
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
-
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+### Twilio Vocabulary-Building Application
+---
+## How It Works
+1. User signs up by texting a "starting word" to a Twilio number.
+2. User gets a profile page using phone number app-name-here.com/5553334444.
+3. User texts unknown word to Twilio number, app verfies user phone number, makes API call to dictionary API site and saves definition(s) to user's page.
+4. User can log into page and study words that they didn't know the day before.
