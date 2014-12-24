@@ -12,15 +12,10 @@
       %meta{:name => 'description', :content => "#{@metadescription}"}
     - else
       %meta{:name => 'description', :content => "Patrick Jones is a bilingual Ruby on Rails developer who loves Chinese food, beef jerky, yerba mate, and fiddling with new APIs."}
-    %script{:type => "cs", :src  => "js/application"}
-    %link{:src => "/css/foundation.css", :rel => 'stylesheet', :type => 'text/css'}
-    %link{:src => "/css/foundation.min.css", :rel => 'stylesheet', :type => 'text/css'}
-    %link{:src => "/css/normalize.css", :rel => 'stylesheet', :type => 'text/css'}
-
-    / = csrf_meta_tag
-    / = javascript_include_tag "vendor/modernizr"
-    / = stylesheet_link_tag "application"
-    /%link(href='https://fonts.googleapis.com/css?family=Raleway:400,200,700' rel='stylesheet' type='text/css')
+    %link{:href => "css/foundation.css", :rel => 'stylesheet' }
+    %link{:href => "css/app.css", :rel => 'stylesheet' }
+    %script{:src => "js/vendor/modernizr.js" }
+    %link{:href => 'https://fonts.googleapis.com/css?family=Raleway:400,200,700', :rel=> 'stylesheet', :type => 'text/css' }
   %body
     %header
       /= render ''
@@ -28,4 +23,7 @@
       /= render ''
       = yield
     %footer
-      %script{:type => "text/javascript", :src  => "js/foundation.min.js"}
+      %script{ :src => "js/vendor/jquery.js" }
+      %script{ :src => "js/foundation.min.js" }
+      :javascript
+        $(document).foundation();
