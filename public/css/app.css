@@ -41,6 +41,10 @@
   margin-right: -5px;
 }
 
+a:hover {
+  color: red;
+}
+
 .pull-left {
   text-align: left;
 }
