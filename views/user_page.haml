@@ -7,12 +7,19 @@
 .row
   .small-12.column
     -@user.definitions.each do |query|
-      .small-4.column
-        %h4{class: 'button radius info', style: 'width: 300px;'}
-          =query.word
-          |
-          =query.definition
+      .small-12.column
+        .button.radius.info.pull-left{style: 'width: 100%;'}
+          %h3
+            Word:
+            =query.word.capitalize
+          %p
+            Definition:
+            =query.definition.capitalize
 .row
   .small-12.column
     %hr
-    %p Powered by the Twilio API and Dictionary API
+    %p
+      Powered by the Twilio API and Dictionary API
+      |
+      Web Application Developed by
+      %a.orange{:href => "http://pmichaeljones.herokuapp.com", :target => "_blank" } Patrick Jones
