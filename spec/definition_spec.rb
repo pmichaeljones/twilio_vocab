@@ -1,3 +1,4 @@
+#require "rspec"
 require_relative '../models/definition.rb'
 
 describe Definition do
