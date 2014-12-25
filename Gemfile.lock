@@ -38,6 +38,8 @@ GEM
     rake (10.4.2)
     shotgun (0.9)
       rack (>= 1.0)
+    shoulda-matchers (2.7.0)
+      activesupport (>= 3.0.0)
     sinatra (1.4.5)
       rack (~> 1.4)
       rack-protection (~> 1.4)
@@ -67,6 +69,7 @@ DEPENDENCIES
   pry
   rake
   shotgun
+  shoulda-matchers
   sinatra
   sinatra-activerecord
   sinatra-assetpack
