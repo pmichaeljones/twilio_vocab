@@ -6,4 +6,9 @@ get '/' do
   haml :index
 end
 
+get '/:number' do
+  haml :user_page
+end
+
+
 
