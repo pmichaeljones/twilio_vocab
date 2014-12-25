@@ -1,3 +1,3 @@
-class Defintion < ActiveRecord::Base
+class Definition < ActiveRecord::Base
   belongs_to :user
 end
