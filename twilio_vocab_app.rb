@@ -8,9 +8,13 @@ get '/' do
   haml :index
 end
 
-get '/dog/:number' do
-  haml :user_page
-  render :
+get '/:number' do
+  @user = User.find_by(phone_number: params[:number])
+  if @user
+    haml :user_page
+  else
+    haml :error_page
+  end
 end
 
 
