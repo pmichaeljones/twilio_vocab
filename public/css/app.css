@@ -17,6 +17,11 @@
   font-weight: 200;
 }
 
+.info-bullet {
+  font-size: 16px;
+  font-weight: 200;
+}
+
 .thick-title {
   font-weight: bold;
   display: inline-block;
