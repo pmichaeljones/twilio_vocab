@@ -59,6 +59,10 @@ a:hover {
 
 /*COLORS*/
 
+.accordion .accordion-navigation > .content.active, .accordion dd > .content.active {
+  background: transparent;
+}
+
 .white {
   color: white;
 }
