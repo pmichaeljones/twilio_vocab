@@ -28,17 +28,11 @@
                 %a.centered{ :href => "#panel1", :style => "width: 381px; margin-left: 25%;"} Curious How It Works? Click for Details.
                 #panel1.content.opaque
                   %ul.no-bullet
-                    %li.info-bullet
-                      1. Sign Up for Free
-                      %span.sup *
-                      by Texting the word VOCAB to 555-555-5555
-                    %li.info-bullet 2. Text a Word You Don't Know to 555-555-5555
-                    %li.info-bullet 3. App will Fetch Defintion and Add it to Your Personal Page
-                    %li.info-bullet
-                      4. Visit http://app.com/5555555555
-                      %span.tiny (your phone number)
-                      to see your words
-                    %li.info-bullet 5. Study Words to Increase Your Vocabulary & Expand Your Horizons
+                    %li.info-bullet 1. Twilio API receives text message & verifies incoming number is a known user
+                    %li.info-bullet 2. Create user process starts if unknown user
+                    %li.info-bullet 3. For known user, Twilio passes word to Dictionary API
+                    %li.info-bullet 4. App queries Dictionary API and parses XML response
+                    %li.info-bullet 5. Word & definition added to user defintion and shown on user page
   .row
     .small-12.small-centered.columns.centered
       %p.white
