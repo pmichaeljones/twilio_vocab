@@ -9,6 +9,13 @@ get '/' do
   haml :index
 end
 
+get '/incoming' do
+  binding.pry
+  if params[:Body].downcase== "vocab"
+
+end
+
+
 get '/:number' do
   @user = User.find_by(phone_number: params[:number])
   if @user
