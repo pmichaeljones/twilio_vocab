@@ -12,7 +12,6 @@ get '/' do
 end
 
 get '/incoming' do
-  binding.pry
 
   if params[:Body].downcase == "vocab" || params[:Body].downcase == "no" || params[:Body].downcase == "no"
 
@@ -20,7 +19,9 @@ get '/incoming' do
 
     message = "We don't recognize your number. Want to set up an account? It takes one minute, no joke. Reply Yes or No." if session["current_user"] == false
 
-    create_new_user(params) if params[:Body].downcase == "yes" and return
+    binding.pry
+
+    create_new_user(params) if params[:Body].downcase == "yes"
 
     message = "Okay. Just text Vocab to this number in the future if you want to sign up." if params[:Body].downcase == "no"
 
@@ -37,6 +38,18 @@ get '/incoming' do
 
 end
 
+def create_new_user(params)
+  binding.pry
+  @user = User.new
+  @user.phone_number = params[:From][2..11]
+  @user.save
+  response = Twilio::TwiML::Response.new do |r|
+      r.Message "You're all ready to go. Text an unknown word to this number. Check your defintions at http://app.com/#{params[:From][2..11]}"
+    end
+  response.text
+  return self
+end
+
 
 get '/:number' do
   @user = User.find_by(phone_number: params[:number])
@@ -47,10 +60,6 @@ get '/:number' do
   end
 end
 
-def create_new_user(params)
-  @user = User.new
-  @user.phone_number = params[:From][2..11]
-end
 
 #person texts vocab
 #see if they're a current user. If not, ask to sign up
