@@ -13,20 +13,19 @@ end
 
 get '/incoming' do
   session["known_user"] ||= false
-  #binding.pry
-  if params[:Body].downcase == "vocab"
-    twiml = Twilio::TwiML::Response.new do |r|
-      r.Message "We don't recognize your number. Want to set up an account? It takes one minute, no joke."
-    end
-    session["known_user"] == true
-    twiml.text
+
+  if session["known_user"] == false
+    message = "We don't recognize your number. Want to set up an account? It takes one minute, no joke."
   else
-    binding.pry
-    twiml = Twilio::TwiML::Response.new do |r|
-      r.Message "Back for more I see."
-    end
-    twiml.text
+    message = "We've seen you before. Welcome back."
   end
+
+  response = Twilio::TwiML::Response.new do |r|
+    r.Message message
+  end
+
+  session["known_user"] = true
+  response.text
 end
 
 
