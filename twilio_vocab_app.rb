@@ -12,20 +12,31 @@ get '/' do
 end
 
 get '/incoming' do
-  session["known_user"] ||= false
 
-  if session["known_user"] == false
-    message = "We don't recognize your number. Want to set up an account? It takes one minute, no joke."
+  if params[:Body].downcase == "vocab"
+
+    session["current_user"] ||= false
+
+    if session["current_user"] == false
+      message = "We don't recognize your number. Want to set up an account? It takes one minute, no joke. Reply Yes or No."
+    else
+      if params[:Body].downcase == "yes"
+        create_new_user(params)
+      else
+        message = "Okay. Just text Vocab to this number in the future if you want to sign up."
+      end
+    end
+
+    response = Twilio::TwiML::Response.new do |r|
+      r.Message message
+    end
+
+    session["current_user"] = true
+    response.text
   else
-    message = "We've seen you before. Welcome back."
+    #run code for checking user status and getting defintions
   end
 
-  response = Twilio::TwiML::Response.new do |r|
-    r.Message message
-  end
-
-  session["known_user"] = true
-  response.text
 end
 
 
@@ -37,6 +48,18 @@ get '/:number' do
     haml :error_page
   end
 end
+
+def create_new_user(params)
+  @user = User.new
+  @user.phone_number = params[:From][2..11]
+end
+
+#person texts vocab
+#see if they're a current user. If not, ask to sign up
+
+#if person is a current user, run the dictionary API method
+
+
 
 
 
