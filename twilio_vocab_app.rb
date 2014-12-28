@@ -13,18 +13,16 @@ end
 
 get '/incoming' do
 
-  if params[:Body].downcase == "vocab"
+  if params[:Body].downcase == "vocab" || params[:Body].downcase == "no" || params[:Body].downcase == "no"
 
     session["current_user"] ||= false
 
-    if session["current_user"] == false
-      message = "We don't recognize your number. Want to set up an account? It takes one minute, no joke. Reply Yes or No."
-    else
-      if params[:Body].downcase == "yes"
-        create_new_user(params)
-      else
-        message = "Okay. Just text Vocab to this number in the future if you want to sign up."
-      end
+    message = "We don't recognize your number. Want to set up an account? It takes one minute, no joke. Reply Yes or No." if session["current_user"] == false
+
+    if params[:Body].downcase == "yes"
+      create_new_user(params)
+    elsif params[:Body].downcase == "no"
+      message = "Okay. Just text Vocab to this number in the future if you want to sign up."
     end
 
     response = Twilio::TwiML::Response.new do |r|
@@ -33,6 +31,12 @@ get '/incoming' do
 
     session["current_user"] = true
     response.text
+
+  end
+
+
+
+
   else
     #run code for checking user status and getting defintions
   end
