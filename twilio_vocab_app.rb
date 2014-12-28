@@ -1,6 +1,7 @@
 require "sinatra"
 require "sinatra/activerecord"
 require "pry"
+require "twilio-ruby"
 require_relative "models/user.rb"
 require_relative "models/definition.rb"
 
@@ -10,9 +11,14 @@ get '/' do
 end
 
 get '/incoming' do
-  binding.pry
-  if params[:Body].downcase== "vocab"
-
+  #binding.pry
+  if params[:Body].downcase == "vocab"
+    twiml = Twilio::TwiML::Response.new do |r|
+      r.Message "We don't recognize your number. Want to set up an account? It takes one minute, no joke."
+    end
+    twiml.text
+  else
+  end
 end
 
 
