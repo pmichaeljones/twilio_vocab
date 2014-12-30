@@ -13,15 +13,13 @@ end
 
 get '/incoming' do
 
-  if params[:Body].downcase == "vocab" || params[:Body].downcase == "no" || params[:Body].downcase == "no"
+  if params[:Body].downcase == "vocab" || params[:Body].downcase == "yes" || params[:Body].downcase == "no"
 
     session["current_user"] ||= false
 
     message = "We don't recognize your number. Want to set up an account? It takes one minute, no joke. Reply Yes or No." if session["current_user"] == false
 
-    binding.pry
-
-    create_new_user(params) if params[:Body].downcase == "yes"
+    create_new_user(params) if params[:Body].downcase == "yes" and return
 
     message = "Okay. Just text Vocab to this number in the future if you want to sign up." if params[:Body].downcase == "no"
 
@@ -39,7 +37,7 @@ get '/incoming' do
 end
 
 def create_new_user(params)
-  binding.pry
+
   @user = User.new
   @user.phone_number = params[:From][2..11]
   @user.save
@@ -47,7 +45,6 @@ def create_new_user(params)
       r.Message "You're all ready to go. Text an unknown word to this number. Check your defintions at http://app.com/#{params[:From][2..11]}"
     end
   response.text
-  return self
 end
 
 
