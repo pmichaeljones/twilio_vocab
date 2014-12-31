@@ -76,7 +76,7 @@ def send_error_text(number)
   @client = Twilio::REST::Client.new ENV["TWILIO_SID"], ENV["TWILIO_TOKEN"]
 
   message = @client.account.messages.create(
-    :body => "You're not a user of this app. Text VOCAB to this number to become a user.",
+    :body => "We don't recognize you as a user of this app. Text VOCAB to this number to become a user.",
     :to => "+1#{number}",
     :from => "+17208973141"
     )
