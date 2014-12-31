@@ -1,3 +1,4 @@
+require_relative '../models/user.rb'
 require 'rspec'
 
 describe User do
