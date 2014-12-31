@@ -2,9 +2,11 @@ require "sinatra"
 require "sinatra/activerecord"
 require "pry"
 require "twilio-ruby"
-require "definition"
+require_relative "definition_api.rb"
 require_relative "models/user.rb"
 require_relative "models/definition.rb"
+
+include DefinitionAPI
 
 enable :sessions
 
@@ -36,7 +38,8 @@ get '/incoming' do
     @user = User.find_by(phone_number: params[:From][2.11])
     word = params[:Body]
     if @user
-      Defintion.look_up(word)
+      DefintionAPI::Defintion.look_up(word)
+    end
   end
 
 end
@@ -72,14 +75,3 @@ get '/:number' do
     haml :error_page
   end
 end
-
-
-#person texts vocab
-#see if they're a current user. If not, ask to sign up
-
-#if person is a current user, run the dictionary API method
-
-
-
-
-
