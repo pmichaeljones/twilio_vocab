@@ -17,3 +17,6 @@
 
 #ignore environment variables file
 /env.rb
+
+# Ignore application configuration
+/config/application.yml

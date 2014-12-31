@@ -1,7 +1,6 @@
-require 'json'
+require 'nokogiri'
 require 'net/http'
-
-require_relative "env.rb"
+require 'pry'
 
 module DefinitionAPI
 
@@ -13,9 +12,8 @@ module DefinitionAPI
 
 
     def self.get_definition(word)
-      uri = URI("http://www.stands4.com/services/v2/defs.php?uid=3692&tokenid=#{ENV["DEFINITION_API_TOKEN"]}&word=#{word}")
+      xml = Nokogiri::XML(open("http://www.stands4.com/services/v2/defs.php?uid=3692&tokenid=#{ENV["DEFINITION_API_TOKEN"]}&word=#{word}"))
       binding.pry
-      Net::HTTP.get(uri)
     end
 
 
