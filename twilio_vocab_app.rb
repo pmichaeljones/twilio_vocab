@@ -16,7 +16,6 @@ get '/' do
 end
 
 get '/incoming' do
-  binding.pry
 
   if params[:Body].downcase == "vocab" || params[:Body].downcase == "no"
 
