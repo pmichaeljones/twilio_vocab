@@ -21,7 +21,7 @@ get '/incoming' do
 
     message = "Okay. Just text Vocab to this number in the future if you want to sign up." if params[:Body].downcase == "no"
 
-    redirect '/create_new_user' if params[:Body].downcase == "yes"
+    create_new_user(params[:From][2..11]) if params[:Body].downcase == "yes"
 
     response = Twilio::TwiML::Response.new do |r|
       r.Message message
@@ -37,17 +37,28 @@ get '/incoming' do
 
 end
 
-get '/create_new_user' do
+def create_new_user(phone_number)
   binding.pry
   @user = User.new
-  @user.phone_number = params[:From][2..11]
+  @user.phone_number = phone_number
   @user.save
-  response = Twilio::TwiML::Response.new do |r|
-    r.Message "You're all ready to go. Text an unknown word to this number. Check your defintions at http://app.com/#{params[:From][2..11]}"
-  end
-  response.text
+  send_confirmation_text(@user.id)
 end
 
+def send_confirmation_text(user_id)
+  binding.pry
+  @user = User.find(user_id)
+  account_sid = ENV["TWILIO_SID"]
+  auth_token = ENV["TWILIO_TOKEN"]
+  @client = Twilio::REST::Client.new account_sid, auth_token
+
+  message = @client.account.messages.create(
+    :body => "You're all ready to go. Text an unknown word to this number. Check your defintions at http://app.com/#{params[:From][2..11]}",
+    :to => "+1#{@user.phone_number}",
+    :from => "+17208973141"
+    )
+  puts message.to
+end
 
 get '/:number' do
   @user = User.find_by(phone_number: params[:number])
