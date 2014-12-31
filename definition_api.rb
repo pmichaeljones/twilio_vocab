@@ -19,7 +19,7 @@ module DefinitionAPI
       return word, definition
     end
 
-
   end
+
 
 end

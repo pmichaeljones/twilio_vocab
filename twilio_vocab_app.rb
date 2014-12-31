@@ -16,6 +16,7 @@ get '/' do
 end
 
 get '/incoming' do
+  binding.pry
 
   if params[:Body].downcase == "vocab" || params[:Body].downcase == "no"
 
@@ -40,8 +41,12 @@ get '/incoming' do
     word = params[:Body]
     if @user
       definition_array = DefinitionAPI::Definition.get_definition(word)
-      @user.definitions.create(word: definition_array[0], definition: definition_array[1])
-      send_successful_new_word_text(@user.id, definition_array)
+      if definition_array[1] == nil
+        send_no_word_available(@user.id)
+      else
+        @user.definitions.create(word: definition_array[0], definition: definition_array[1])
+        send_successful_new_word_text(@user.id, definition_array)
+      end
     else
       send_error_text(params[:From][2..11])
     end
@@ -54,6 +59,18 @@ def create_new_user(phone_number)
   @user.phone_number = phone_number
   @user.save
   send_confirmation_text(@user.id)
+end
+
+def send_no_word_available(user_id)
+  @user = User.find(user_id)
+  @client = Twilio::REST::Client.new ENV["TWILIO_SID"], ENV["TWILIO_TOKEN"]
+
+  message = @client.account.messages.create(
+    :body => "Sorry, but we were unable to find a definition for that word. Did you spell it correctly? Please retry.",
+    :to => "+1#{@user.phone_number}",
+    :from => "+17208973141"
+    )
+  puts message.to
 end
 
 def send_error_text(number)
@@ -78,8 +95,6 @@ def send_successful_new_word_text(user_id, definition_array)
     )
   puts message.to
 end
-
-
 
 def send_confirmation_text(user_id)
   @user = User.find(user_id)
