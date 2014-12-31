@@ -2,6 +2,7 @@ require "sinatra"
 require "sinatra/activerecord"
 require "pry"
 require "twilio-ruby"
+require "definition"
 require_relative "models/user.rb"
 require_relative "models/definition.rb"
 
@@ -32,7 +33,10 @@ get '/incoming' do
     create_new_user(params[:From][2..11])
 
   else
-    #run code for checking user status and getting defintions
+    @user = User.find_by(phone_number: params[:From][2.11])
+    word = params[:Body]
+    if @user
+      Defintion.look_up(word)
   end
 
 end
