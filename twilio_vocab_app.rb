@@ -36,29 +36,54 @@ get '/incoming' do
     create_new_user(params[:From][2..11])
 
   else
-    @user = User.find_by(phone_number: params[:From][2.11])
+    @user = User.find_by(phone_number: params[:From][2..11])
     word = params[:Body]
     if @user
-      DefinitionAPI::Definition.look_up(word)
+      definition_array = DefinitionAPI::Definition.get_definition(word)
+      @user.definitions.create(word: definition_array[0], definition: definition_array[1])
+      send_successful_new_word_text(@user.id, definition_array)
+    else
+      send_error_text(params[:From][2..11])
     end
   end
 
 end
 
 def create_new_user(phone_number)
-  binding.pry
   @user = User.new
   @user.phone_number = phone_number
   @user.save
   send_confirmation_text(@user.id)
 end
 
-def send_confirmation_text(user_id)
-  binding.pry
+def send_error_text(number)
+  @client = Twilio::REST::Client.new ENV["TWILIO_SID"], ENV["TWILIO_TOKEN"]
+
+  message = @client.account.messages.create(
+    :body => "You're not a user of this app. Text VOCAB to this number to become a user.",
+    :to => "+1#{number}",
+    :from => "+17208973141"
+    )
+  puts message.to
+end
+
+def send_successful_new_word_text(user_id, definition_array)
   @user = User.find(user_id)
-  account_sid = ENV["TWILIO_SID"]
-  auth_token = ENV["TWILIO_TOKEN"]
-  @client = Twilio::REST::Client.new account_sid, auth_token
+  @client = Twilio::REST::Client.new ENV["TWILIO_SID"], ENV["TWILIO_TOKEN"]
+
+  message = @client.account.messages.create(
+    :body => "Word: #{definition_array[0]}, and definition: #{definition_array[1]} were successfully added: http://app.com/#{params[:From][2..11]}",
+    :to => "+1#{@user.phone_number}",
+    :from => "+17208973141"
+    )
+  puts message.to
+end
+
+
+
+def send_confirmation_text(user_id)
+  @user = User.find(user_id)
+  @client = Twilio::REST::Client.new ENV["TWILIO_SID"], ENV["TWILIO_TOKEN"]
 
   message = @client.account.messages.create(
     :body => "You're all ready to go. Text an unknown word to this number. Check your defintions at http://app.com/#{params[:From][2..11]}",
