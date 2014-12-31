@@ -1,3 +1,8 @@
+require 'json'
+require 'net/http'
+
+require_relative "env.rb"
+
 module DefinitionAPI
 
   class Definition
@@ -7,12 +12,13 @@ module DefinitionAPI
     end
 
 
-    def call_dictionary_api(word)
-
+    def self.get_definition(word)
+      uri = URI("http://www.stands4.com/services/v2/defs.php?uid=3692&tokenid=#{ENV["DEFINITION_API_TOKEN"]}&word=#{word}")
+      binding.pry
+      Net::HTTP.get(uri)
     end
 
 
   end
 
 end
-
