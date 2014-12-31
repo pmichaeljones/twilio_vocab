@@ -72,7 +72,7 @@ def send_successful_new_word_text(user_id, definition_array)
   @client = Twilio::REST::Client.new ENV["TWILIO_SID"], ENV["TWILIO_TOKEN"]
 
   message = @client.account.messages.create(
-    :body => "Word: #{definition_array[0]}, and definition: #{definition_array[1]} were successfully added: http://app.com/#{params[:From][2..11]}",
+    :body => "Word: #{definition_array[0].upcase} * Definition: '#{definition_array[1].capitalize}' * Successfully added to your page: http://app.com/#{params[:From][2..11]}",
     :to => "+1#{@user.phone_number}",
     :from => "+17208973141"
     )
